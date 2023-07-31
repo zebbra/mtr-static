@@ -12,22 +12,12 @@ jobs:
         name: [mtr]
         os_id: [alpine]
         os_version_id: [edge]
-        arch: [i386, amd64, arm32v6, arm32v7, arm64v8, ppc64le, s390x]
+        arch: [amd64, arm64v8]
         include:
-          - arch: i386
-            docker_arch: linux/i386
           - arch: amd64
             docker_arch: linux/amd64
-          - arch: arm32v6
-            docker_arch: linux/arm/v6
-          - arch: arm32v7
-            docker_arch: linux/arm/v7
           - arch: arm64v8
             docker_arch: linux/arm64
-          - arch: ppc64le
-            docker_arch: linux/ppc64le
-          - arch: s390x
-            docker_arch: linux/s390x
 
     name: ${{ matrix.name }} ${{ matrix.os_id }}:${{ matrix.os_version_id }} ${{ matrix.arch }}
 
@@ -53,7 +43,7 @@ jobs:
         run: docker exec multiarch apk upgrade --repository=${{ env.CDN }}
 
       - name: Run apk to install the core build dependencies
-        run: docker exec multiarch apk add build-base pkgconf autoconf automake curl libtool git tar curl perl openssl-dev openssl-libs-static linux-headers ncurses-dev ncurses-static
+        run: docker exec multiarch apk add build-base pkgconf autoconf automake curl libtool git tar curl perl openssl-dev openssl-libs-static linux-headers ncurses-dev ncurses-static jansson-dev jansson-static
 
       - name: Git clone ${{ matrix.name }}
         run: docker exec multiarch git clone https://github.com/traviscross/mtr.git /root/${{ matrix.name }}
